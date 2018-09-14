@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Exercise 8</title>
+    <script type="application/javascript" src="js/underscore-min.js"></script>
+    <script type="application/javascript" src="js/d3.v4.min.js"></script>
+    <script type="application/javascript" src="js/topojson.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/west-nile-map.css"  />
+
+    <script type="application/javascript" src="js/slider.js"></script>
+    <script type="application/javascript" src="js/west-nile-map.js"></script>
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <svg class="west-nile-virus">
+                <svg class="title"></svg>
+                <svg class="map"></svg>
+                <svg class="legend"></svg>
+                <svg class="filter"></svg>
+            </svg>
+        </div>
+    </div>
+</div>
+<div class="tooltip"></div>
+
+<script type="application/javascript">
+    d3.queue()
+        .defer(d3.json, "data/West_Nile_Virus_by_County.json")
+        .defer(d3.json, "https://gist.githubusercontent.com/threestory/ed0f322d7bb2e3be8ded/raw/2aa8df2f15817985c60b67d726e6d13197e8ffb6/cb_2014_us_county_5m.json")
+        .await(init);
+
+    function init(error, weeklyReportsByCounty, countyGeography) {
+        if(error) { console.log(error); }
+
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 45;
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 45;
+        var map = westNileMap.display()
+            .width(w)
+            .height(h);
+
+        d3.select(".west-nile-virus")
+            .datum({
+                weeklyReportsByCounty:weeklyReportsByCounty,
+                countyGeography:countyGeography
+            })
+            .call(map);
+    }
+</script>
+</body>
+</html>

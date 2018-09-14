@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Turbine Time Series</title>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simplify-js@1.2.3/simplify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script type="application/javascript" src="app.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="app.css"/>
+</head>
+<body class="container-fluid">
+    <header class="text-center">
+        <h2>Turbine Transient Labeler</h2>
+    </header>
+    <div class="row dashboard-options">
+        <div class="col text-center">
+                <div class="btn-group" id="psn-selector">
+                    <button
+                            class="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Select a PSN
+                    </button>
+                    <div class="dropdown-menu">
+                    </div>
+                </div>
+                <div class="btn-group" id="metric-selector">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Label Types ...
+                    </button>
+                    <div class="dropdown-menu">
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row dashboard-state-description">
+        <div class="col-md-3 text-center">
+            <span id="data-count">
+            0 data points across 0 days
+            </span>
+            <span class="data-color fa-stack" >
+                <i class='fas fa-square fa-stack-2x'> </i>
+            </span>
+        </div>
+        <div class="col-md-3 text-center transient-stats">
+            <span id="transient-count">
+            0 labeled transients
+            </span>
+            <span class="transient-color fa-stack" >
+                <i class='fas fa-square fa-stack-2x'> </i>
+            </span>
+
+        </div>
+        <div class="col-md-3 text-center">
+            <span id="selected-count">
+            0 data points selected
+            </span>
+            <span class="selected-color fa-stack" >
+                <i class='fas fa-square fa-stack-2x'> </i>
+            </span>
+        </div>
+        <div class="col-md-3 text-center" id="note-download">
+            <span id="note-stats"></span>
+            <span class="fa-stack button-color" id="save" >
+                <i class='fas fa-square fa-stack-2x'> </i>
+                <i class='fas fa-save fa-stack-1x'> </i>
+            </span>
+            <span class="fa-stack button-color" id="clear" >
+                <i class='fas fa-square fa-stack-2x'> </i>
+                <i class='fas fa-trash fa-stack-1x'> </i>
+            </span>
+        </div>
+        <div id="annotation" class="modal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Annotate Selected Points</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="transient-select">Label</label>
+                                <select class="form-control" id="transient-select">
+                                    <option>Transient</option>
+                                    <option>Not Transient</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="data-notes">Notes</label>
+                                <textarea class="form-control" id="data-notes" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                        <button type="button" class="btn btn-primary save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="reduced-space" class="col-md-6">
+            <div class="row">
+                <div class="col-md-4 text-left">
+                    <h4>Reduced Space</h4>
+
+                </div>
+                <div class="col-md-8 text-left">
+                    <div class="btn-group x-selector">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            X-Axis Feature
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                    <div class="btn-group y-selector">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Y-Axis Feature
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <svg class="scatter">
+                        <g class="hex"></g>
+                        <g class="circles"></g>
+                        <g class="xaxis"></g>
+                        <g class="yaxis"></g>
+                        <text class="yaxis-label"></text>
+                        <text class="xaxis-label"></text>
+                        <g class="legend"></g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div id="timeseries" class="col-md-6">
+            <div class="row">
+
+                <div class="col-md-9 text-right">
+                    <div class="btn-group eigenvector-selector">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Composite Features
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                    <div class="btn-group raw-feature-selector">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="modal" data-target="#raw-feature-modal" aria-haspopup="true" aria-expanded="false">
+                            Machine Tags
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-right">
+                    <h4>Time Series</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div id="timeseries-plots" class="col-md-12">
+                    <div id="timeseries-overlay"></div>
+                    <div id="timeseries-plots-eigen"></div>
+                    <div id="timeseries-plots-raw"></div>
+                </div>
+            </div>
+            <div class="row">
+                <svg id="xaxis" class="col-md-12">
+                    <g class="xaxis"></g>
+                </svg>
+            </div>
+            <div id="raw-feature-modal" class="modal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Tags to Plot</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" >
+                            <table id="tag-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Tag</td>
+                                        <td>Subsystem</td>
+                                        <td>Measurement Type</td>
+                                        <td id="eigX-label"></td>
+                                        <td id="eigY-label"></td>
+                                        <td>Tag Description</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary plot">Plot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="stats" class="col text-center">
+            <h4>Operating Load Profiles</h4>
+            <div>
+                Similar packages: <span id="package-similarity"></span>
+            </div>
+
+            <div id="cluster-breakdown"></div>
+        </div>
+    </div>
+    <div id="timeseries-hover" class="popover"></div>
+
+    <script type="application/javascript">
+        d3.queue()
+            .defer(d3.csv, "data/pipeline_files/model2_psn.csv")
+            .defer(d3.csv, "data/pipeline_files/model2_description.csv")
+            .defer(d3.csv, "data/manual_files/model2_composite_fields.csv")
+            .defer(d3.csv, "data/manual_files/metrics.csv")
+            .defer(d3.csv, "data/pipeline_files/model2_20min_partition_cluster_stats.csv")
+            .defer(d3.csv, "data/pipeline_files/model2_20min_cluster_package_similarity.csv")
+            .defer(d3.csv, "data/pipeline_files/model2_eigenvalues.csv")
+            .await(init);
+
+        function init(error, psn, fields,compositeFields, metrics, clusterStats,packageSimilarity, eigenvalues) {
+            if (error) {
+                console.log(error);
+            }
+
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) - 30;
+            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 30;
+            var dashboard = transientTector.director()
+                .dimensions({width: w, height: h});
+
+            d3.select("body")
+                .datum({
+                    psn: psn,
+                    fields: fields,
+                    compositeFields: compositeFields,
+                    metrics: metrics,
+                    clusterStats:clusterStats,
+                    packageSimilarity:packageSimilarity,
+                    eigenvalues:eigenvalues
+                })
+                .call(dashboard);
+        }
+    </script>
+</body>
+</html>

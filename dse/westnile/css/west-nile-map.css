@@ -1,0 +1,22 @@
+html{
+    font-size:12px;
+}
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    width: auto;
+
+    padding: 10px;
+
+    background: #bdbdbd;
+    border: 1px solid #525252;
+    pointer-events: none;
+}
+
+.legend{
+    padding-top:30px;
+}
+.legend h4{
+    margin-bottom:30px;
+}
+

@@ -1,0 +1,141 @@
+body{
+    background-color: #16181A;
+    color:#E1E1E1;
+}
+
+h1,h2,h4,h5{
+    color: #E1E1E1;
+}
+
+#timeseries-overlay{
+    position:absolute;
+}
+
+.cluster{
+    display:inline-block;
+    margin-right:5px;
+    color:#E1E1E1;
+    text-align: center;
+    font-size:10px;
+}
+
+#timeseries-hover{
+    display:none;
+    position:absolute;
+    width:200px;
+    min-width:100px;
+    background-color:white;
+    border: 1px solid #FF9D8E;
+    font-size:10px;
+    color:black;
+}
+
+.transient-label{
+    fill:#F38400;
+    opacity: .9;
+}
+
+.timespan{
+    fill:#597203;
+
+}
+
+.plot-line{
+     stroke:#E1E1E1;
+     stroke-width: 1px;
+ }
+
+.yaxis,.xaxis{
+    stroke:#E1E1E1;
+    stroke-width: 1px;
+}
+
+.stdev{
+    fill:#037798;
+}
+.mean{
+    stroke:#E1E1E1;
+    stroke-width:1px;
+}
+
+circle.hover{
+    fill: #FF9D8E;
+}
+line.hover{
+    stroke:#FF9D8E;
+    stroke-width: 1px;
+}
+
+rect.cluster-border{
+    stroke:#E1E1E1;
+    stroke-width: 1;
+    fill:none;
+
+}
+rect.cluster-border.selected{
+    stroke:#86A322;
+    stroke-width: 3;
+}
+rect.cluster-border.adjacent{
+    stroke:#597203;
+    stroke-width: 1;
+}
+.data-color .fa-square{
+    color: #0DA3CE;
+}
+
+.transient-color .fa-square{
+    color: #F38400;
+}
+
+.selected-color .fa-square{
+    color: #86A322;
+}
+
+.button-color .fa-square{
+    color: #6A6C6E;
+}
+
+.similar-link{
+    margin:0px 2px;
+}
+
+#raw-feature-modal .modal-dialog{
+    width:85%;
+    max-width:85%;
+}
+.eig-value{
+    background-color: #885692;
+    border:1px solid #B894BF;
+    height:15px;
+}
+#tag-table{
+    text-transform:capitalize;
+    color:#6A6C6E;
+}
+
+text.label{
+    color:white;
+    fill:white;
+    stroke:white;
+    font-size:10px;
+}
+text.legendTitle{
+    color:white;
+    fill:white;
+    stroke-width: 0;
+    font-size:14px;
+}
+.dashboard-options{
+    margin-bottom: 5px;
+}
+.dashboard-state-description{
+    margin-bottom: 10px;
+}
+
+path.domain{
+    stroke:white;
+}
+.tick line{
+    stroke:white;
+}

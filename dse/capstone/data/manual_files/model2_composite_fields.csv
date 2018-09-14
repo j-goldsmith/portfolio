@@ -1,0 +1,6 @@
+field,name,variance_explained
+pca_eig0,machine load,21.35
+pca_eig1,control signals,10.59
+pca_eig2,pressure,7.36
+pca_eig3,mixed,6.45
+pca_eig4,temperatures,5.37
