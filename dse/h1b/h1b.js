@@ -739,7 +739,7 @@ h1b.map = function(){
         data.execFilters();
 
         //then
-        container.select('g.contextPaths').attr("transform",null)
+        //container.select('g.contextPaths').attr("transform",null)
         draw();
 
         //then handle callbacks
@@ -793,7 +793,6 @@ h1b.map = function(){
 
     function draw(){
         var aggregatedData = data.aggregateForMap();
-     //   var valueExtent = d3.extent(_.map(aggregatedData.features,function(d){return d.properties.totalCount;}));
         var mapBounds = _calcMapBounds(aggregatedData);
 
         container.attr('width',dimensions.width)
@@ -801,10 +800,6 @@ h1b.map = function(){
             .attr('x', dimensions.parentWidth*1/3)
             .attr('y', dimensions.height*.1);
 
-     //   scales.values
-    //        .domain(valueExtent)
-      //
-        //      .range(colors.secondary.slice(1));
         var globalScales = data.scales();
 
         var geoProjection = d3.geoMercator()
@@ -862,13 +857,13 @@ h1b.map = function(){
 
         p.exit().remove();
 
-        container.call(
+       /* container.call(
             d3.zoom()
                 .scaleExtent([1, 8])
                 .on("zoom", function () {
                     container.select('g.contextPaths').attr("transform", d3.event.transform);
                 })
-        );
+        );*/
 
     }
 
