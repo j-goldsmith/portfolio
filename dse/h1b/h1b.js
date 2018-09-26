@@ -1415,8 +1415,8 @@ h1b.jobStats = function () {
                     .duration(500)
                     .style("opacity", 0);
 
-                tooltipElement.style("left", 0)
-                    .style("top", 0);
+               /* tooltipElement.style("left", 0)
+                    .style("top", 0);*/
             })
             .merge(p)
             .attr('y2',function(d){ return jScale(d['jobCount']); })
